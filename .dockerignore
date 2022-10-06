@@ -1,0 +1,11 @@
+node_modules
+npm_debug.log
+
+dockerfile
+makefile
+
+.eslintrc.json
+.env
+.gitignore
+
+LICENSE

@@ -31,15 +31,9 @@ async function getOnlineMembersCount() {
     .members.fetch({ withPresences: true });
 
   const onlineMembers = {
-    online: (await GUILD_MEMBERS.filter((online) => online.presence?.status === 'online')).filter(
-      (member) => !member.user.bot,
-    ).size,
-    idle: (await GUILD_MEMBERS.filter((online) => online.presence?.status === 'idle')).filter(
-      (member) => !member.user.bot,
-    ).size,
-    dnd: (await GUILD_MEMBERS.filter((online) => online.presence?.status === 'dnd')).filter(
-      (member) => !member.user.bot,
-    ).size,
+    online: await GUILD_MEMBERS.filter((online) => online.presence?.status === 'online').size,
+    idle: await GUILD_MEMBERS.filter((online) => online.presence?.status === 'idle').size,
+    dnd: await GUILD_MEMBERS.filter((online) => online.presence?.status === 'dnd').size,
   };
 
   const summaryOnlineMembers = onlineMembers.online + onlineMembers.idle + onlineMembers.dnd;
@@ -51,7 +45,7 @@ async function getMembersCount() {
     .get(process.env.GUILD_ID)
     .members.fetch({ withPresences: true });
 
-  return GUILD_MEMBERS.filter((member) => !member.user.bot).size;
+  return GUILD_MEMBERS.size;
 }
 
 async function precenseStatusUpdate() {

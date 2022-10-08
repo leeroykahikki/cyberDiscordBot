@@ -1,5 +1,7 @@
 // require('dotenv').config();
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const logger = require('log4js').getLogger();
+logger.level = 'debug';
 
 let lastCount = 0;
 let lastOnlineCount = 0;
@@ -16,7 +18,7 @@ const client = new Client({
 });
 
 client.once('ready', async () => {
-  console.log('ready');
+  logger.debug('ready');
 
   while (true) {
     await precenseStatusUpdate();
@@ -55,29 +57,29 @@ async function precenseStatusUpdate() {
 
   const currentOnlineCount = await getOnlineMembersCount();
   const currentCount = await getMembersCount();
-  console.log(currentOnlineCount);
-  console.log(currentCount);
+  logger.debug(currentOnlineCount);
+  logger.debug(currentCount);
 
   if (lastOnlineCount != currentOnlineCount) {
     await infoOnlineChannel
       .setName(`👤 Онлайн: ${currentOnlineCount}`)
-      .then((newChannel) => console.log(`Channel's new name is ${newChannel.name}`))
-      .catch(console.error);
+      .then((newChannel) => logger.debug(`Channel's new name is ${newChannel.name}`))
+      .catch((error) => logger.error(error));
 
     lastOnlineCount = currentOnlineCount;
-    console.log('update online');
+    logger.debug('update online');
   }
 
   if (lastCount != currentCount) {
     await infoOverallChannel
       .setName(`👤 На сервере: ${currentCount}`)
-      .then((newChannel) => console.log(`Channel's new name is ${newChannel.name}`))
-      .catch(console.error);
+      .then((newChannel) => logger.debug(`Channel's new name is ${newChannel.name}`))
+      .catch((error) => logger.error(error));
 
     lastCount = currentCount;
-    console.log('update members');
+    logger.debug('update members');
   }
 
-  console.log('all updated');
+  logger.debug('all updated');
   await new Promise((resolve) => setTimeout(resolve, 180000));
 }

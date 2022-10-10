@@ -1,7 +1,6 @@
 // require('dotenv').config();
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const logger = require('log4js').getLogger();
-logger.level = 'debug';
 
 let lastCount = 0;
 let lastOnlineCount = 0;
@@ -21,7 +20,11 @@ client.once('ready', async () => {
   logger.debug('ready');
 
   while (true) {
-    await precenseStatusUpdate();
+    try {
+      await precenseStatusUpdate();
+    } catch (err) {
+      logger.error(err);
+    }
   }
 });
 
@@ -33,9 +36,9 @@ async function getOnlineMembersCount() {
     .members.fetch({ withPresences: true });
 
   const onlineMembers = {
-    online: await GUILD_MEMBERS.filter((online) => online.presence?.status === 'online').size,
-    idle: await GUILD_MEMBERS.filter((online) => online.presence?.status === 'idle').size,
-    dnd: await GUILD_MEMBERS.filter((online) => online.presence?.status === 'dnd').size,
+    online: GUILD_MEMBERS.filter((online) => online.presence?.status === 'online').size,
+    idle: GUILD_MEMBERS.filter((online) => online.presence?.status === 'idle').size,
+    dnd: GUILD_MEMBERS.filter((online) => online.presence?.status === 'dnd').size,
   };
 
   const summaryOnlineMembers = onlineMembers.online + onlineMembers.idle + onlineMembers.dnd;

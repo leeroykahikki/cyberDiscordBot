@@ -64,7 +64,7 @@ async function precenseStatusUpdate() {
     await infoOnlineChannel
       .setName(`👤 Онлайн: ${currentOnlineCount}`)
       .then((newChannel) => logger.debug(`Channel's new name is ${newChannel.name}`))
-      .catch((error) => logger.error(error));
+      .catch(console.error());
 
     lastOnlineCount = currentOnlineCount;
     logger.debug('update online');
@@ -74,7 +74,7 @@ async function precenseStatusUpdate() {
     await infoOverallChannel
       .setName(`👤 На сервере: ${currentCount}`)
       .then((newChannel) => logger.debug(`Channel's new name is ${newChannel.name}`))
-      .catch((error) => logger.error(error));
+      .catch(console.error());
 
     lastCount = currentCount;
     logger.debug('update members');

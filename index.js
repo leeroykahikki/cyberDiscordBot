@@ -1,6 +1,7 @@
 // require('dotenv').config();
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const logger = require('log4js').getLogger();
+logger.level = 'debug';
 
 let lastCount = 0;
 let lastOnlineCount = 0;
